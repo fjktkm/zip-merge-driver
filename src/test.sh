@@ -20,6 +20,7 @@ git commit -m "Setup custom merge driver for zip files"
 # ベースファイルの作成
 echo "This is the base file." > testfile.txt
 zip content.zip testfile.txt
+rm testfile.txt
 git add content.zip
 git commit -m "Add base zip file content.zip"
 
@@ -27,12 +28,14 @@ git commit -m "Add base zip file content.zip"
 git checkout -b branch_local
 echo "This is the base file.\nThis modification is from the local branch." > testfile.txt
 zip content.zip testfile.txt
+rm testfile.txt
 git add content.zip
 git commit -m "Local changes in content.zip"
 git checkout main
 
 echo "This modification is from the remote branch.\nThis is the base file." > testfile.txt
 zip content.zip testfile.txt
+rm testfile.txt
 git add content.zip
 git commit -m "Remote changes in content.zip"
 
