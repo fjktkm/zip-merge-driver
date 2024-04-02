@@ -6,6 +6,9 @@ LOCAL=$2
 REMOTE=$3
 MERGED=$4
 
+# スクリプトが実行されている現在のディレクトリを取得
+CURRENT_DIR=$(pwd)
+
 # 一時ディレクトリの作成
 WORKDIR=$(mktemp -d)
 echo "Working in $WORKDIR"
@@ -17,21 +20,21 @@ cd "$REPO_DIR"
 git init -b main > /dev/null
 
 # BASE zipの内容をコミット
-unzip -q "$BASE" -d "$REPO_DIR"
+unzip -q "$CURRENT_DIR/$BASE" -d "$REPO_DIR"
 git add . > /dev/null
 git commit -m "Base" > /dev/null
 
 # LOCALの変更を新しいブランチにコミット
 git checkout -b local > /dev/null
 rm -rf "$REPO_DIR"/*  # Clean current directory
-unzip -q "$LOCAL" -d "$REPO_DIR"
+unzip -q "$CURRENT_DIR/$LOCAL" -d "$REPO_DIR"
 git add . > /dev/null
 git commit -m "Local" > /dev/null
 
 # REMOTEの変更をmainブランチにコミット
 git checkout main > /dev/null
 rm -rf "$REPO_DIR"/*  # Clean current directory
-unzip -q "$REMOTE" -d "$REPO_DIR"
+unzip -q "$CURRENT_DIR/$REMOTE" -d "$REPO_DIR"
 git add . > /dev/null
 git commit -m "Remote" > /dev/null
 
@@ -44,7 +47,7 @@ if [ "$(git ls-files -u | wc -l)" -gt 0 ]; then
     exit 1
 else
     # 成功した場合、最終的なzipを作成
-    git archive -o "$MERGED" HEAD
+    git archive -o "$CURRENT_DIR/$MERGED" HEAD
 fi
 
 # 作業ディレクトリの削除
