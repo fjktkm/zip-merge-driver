@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # リポジトリの準備
-REPO_DIR="zip-merge-test-repo"
+REPO_DIR="example"
 if [ -d "$REPO_DIR" ]; then
     rm -rf "$REPO_DIR"
 fi
